@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    function Btn(/*props*/ { text, big, onClick }) {
+      // console.log(text, big);
+      // console.log(props);
+      console.log(text, "was rendered");
+      return (
+        <button
+          onClick={onClick}
+          style={{
+            backgroundColor: "tomato",
+            color: "white",
+            padding: "10px 20px",
+            border: 0,
+            borderRadius: 10,
+            fontSize: big ? 18 : 16,
+          }}
+        >
+          {
+            //{props.text}
+          }
+          {text}
+        </button>
+      );
+    }
+
+    // react 메모 이용하기
+    // props 변화가 없는 애는 rerender X
+    const MemorizeBtn = React.memo(Btn);
+
+    function App() {
+      const [value, setValue] = React.useState("Save Changes");
+      const changeValue = () => setValue("Revert Changes");
+      return (
+        <div>
+          {
+            // Btn ({banana: "Save Changes"}) 형태로 전해짐
+            // 아래 onClick={changeValue} 를 넣는 것은 이벤트 리스너가 아님,
+            // 단지 하나의 prop. 다른 속성들도 마찬가지이다.
+          }
+          <MemorizeBtn
+            text={value}
+            onClick={changeValue}
+            x="false"
+            big={true}
+          />
+          <MemorizeBtn text="Continue" y="7" big={false} />
+        </div>
+      );
+    }
+
+    const root = document.getElementById("root");
+    ReactDOM.render(<App />, root);
+  </script>
+</html>
