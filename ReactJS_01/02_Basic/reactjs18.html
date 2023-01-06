@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="http://unpkg.com/react@latest/umd/react.production.min.js"></script>
+  <script src="http://unpkg.com/react-dom@latest/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const root = document.getElementById("root");
+    function Title() {
+      return (
+        <h3 id="title" onMouseEnter={() => console.log("mouse enter")}>
+          Hello I'm a title
+        </h3>
+      );
+    }
+    /*+const h3 = React.createElement(
+      "h3",
+      {
+        id: "title",
+        onMouseEnter: () => console.log("mouse enter"),
+      },
+      "Hello I'm a h3"
+    );*/
+    const Button = () => (
+      <button
+        style={{
+          backgroundColor: "tomato",
+        }}
+        onClick={() => console.log("i'm clicked")}
+      >
+        Click me
+      </button>
+    );
+    /*const btn = React.createElement(
+      "button",
+      {
+        onClick: () => console.log("i'm clicked"),
+        style: {
+          backgroundColor: "tomato",
+        },
+      },
+      "Click me"
+    );*/
+    // const container = React.createElement("div", null, [Title, Button]);
+    const Container = () => (
+      <div>
+        <Title />
+        <Button />
+        <Button />
+        <Button />
+        <Button />
+      </div>
+    );
+    // 이전 버전은 Container도 함수형으로 바꾸고
+    // ReactDOM.render(<Container />, root);
+    ReactDOM.createRoot(root).render(<Container />); // react 18 버전(Container는 함수형 X)
+  </script>
+</html>

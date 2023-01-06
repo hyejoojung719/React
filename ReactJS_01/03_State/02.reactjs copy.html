@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <div id="root"></div>
+  </body>
+  <script src="https://unpkg.com/react@17.0.2/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.2/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script type="text/babel">
+    const root = document.getElementById("root");
+
+    // 실제로 바뀌는 값만 판단해서 불필요한 리렌더링을 제외한 채로 리렌더리릉을 해줌
+    // 즉, 여기서는 값이 바뀔 때마다 리렌더링
+    function App() {
+      const [counter, setCounter] = React.useState(0);
+      const onClick = () => {
+        // 아래 둘 다 state를 가지고 새로운 값 계산
+        // <state 값 설정 방법>
+        // 1. 직접 값 계산하는 법
+        // setCounter(counter + 1);
+        // 2. 함수를 전달하기
+        setCounter((current) => current + 1);
+      };
+      // const data = React.useState();
+      // console.log(data);
+      // const counter = data[0]; // 바꾸기전 숫자
+      // const modifier = data[1]; // 바꾼 후 숫자(바꿀 숫자)
+      return (
+        <div>
+          <h3>Total clicks: {counter}</h3>
+          <button onClick={onClick}> Click me</button>
+        </div>
+      );
+    }
+    ReactDOM.render(<App />, root);
+  </script>
+</html>
