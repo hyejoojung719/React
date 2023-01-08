@@ -49,9 +49,7 @@
           </div>
 
           <button onClick={reset}>Reset</button>
-          <button onClick={onInvert}>
-            {inverted ? "Turn back" : "Invert"}
-          </button>
+          <button onClick={onInvert}>{inverted ? "Turn back" : "Invert"}</button>
         </div>
       );
     }
@@ -59,6 +57,7 @@
     function KmToMiles() {
       return <h3>Km to M</h3>;
     }
+
     function App() {
       const [index, setIndex] = React.useState("xx");
       const onSelect = (event) => {
