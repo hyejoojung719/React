@@ -1,0 +1,29 @@
+1. npm 설치 with typescript
+   npx create-react-app crypto-tracker --template typescript
+
+2. style component 설치
+   npm i --save-dev @types/styled-components
+   npm i styled-components
+
+3. router dom 설치
+   npm i react-router-dom@5.3.0 
+   npm i react-router-dom react-query
+   
+4. 프로젝트 구조
+   / => All coins
+   /:id => /btc => Coin Detail
+
+5. Nested Router :  한 스크린 내에 또다른 Router를 가질 수 있는 것
+   ex) /btc/information
+
+5. Switch : 한 번에 하나의 Route를 렌더링
+
+6. useParams hook: url의 파라미터 정보를 얻고 싶을 때
+
+7. css 셋업
+   - 기존에 셋팅 되어 있는 style 지우기 
+   - import {createGlobalStyles} from "styled-components";
+   - 전역 스코프에 스타일들을 올려줌
+   - const GlobalStyle = createGlobalStyle``;
+   - <></> 안에 넣기 => 유령 컴포넌트 why? 단 하나의 element만 return 해야 하므로
+   

@@ -8,6 +8,7 @@ import styled from "styled-components";
 // typescript에게 설명해주는 개념
 // (예전) const x = (a: number, b:number)  => a+b
 
+// container에도 설정
 interface ContainerProps {
   bgColor: string;
 }
