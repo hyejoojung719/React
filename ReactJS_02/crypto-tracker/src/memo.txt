@@ -46,7 +46,7 @@
 => styled.d.ts 파일 안에서 아래 추가
 declare module "styled-components" {
   export interface DefaultTheme {
-    bgColor: string;
+    bgColor: string; 
     textColor: string;
     accentColor: string;
   }
@@ -71,3 +71,9 @@ margin: 0 auto;
 
 16.component가 생성될 때 한 번만 코드를 실행하는 방법?
 => useEffect
+
+17. console에서 우클릭 후 store object as global variable 클릭하면 
+object 데이터가 temp에 저장 됨. 그럼 필요시 temp에 접근
+
+18. 보통 interface 이름 지을 때 앞에 I를 붙이기도함
+ex) IPriceData
