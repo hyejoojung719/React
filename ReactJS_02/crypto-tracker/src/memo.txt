@@ -26,4 +26,48 @@
    - 전역 스코프에 스타일들을 올려줌
    - const GlobalStyle = createGlobalStyle``;
    - <></> 안에 넣기 => 유령 컴포넌트 why? 단 하나의 element만 return 해야 하므로
-   
+
+8.React18에서 root 에러
+   - const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement
+);
+
+9. 폰트 설정 => google font global style에 import, bodu font-family
+
+10. color : https://flatuicolors.com/palette/gb
+
+11. App.tsx는 ThemeProvider안에 있기 떄문에 Theme에 접근 가능
+=> 접근 못한다고 오류 뜨는 이유
+=> tsconfig.json 파일에 다음과 같은 필드를 명시해야 vsc에서 type inference 가능
+{
+"include": ["src/**/*.tsx", "src/**/*.ts", "src/**/*.d.ts"]
+}
+=> 이래도 안돼서.. 여기 참고 https://velog.io/@hjs0522/styled-components-%EC%97%90%EB%9F%AC-DefaultTheme-%ED%98%95%EC%8B%9D%EC%97%90-%EC%86%8D%EC%84%B1%EC%9D%B4-%EC%97%86%EC%8A%B5%EB%8B%88%EB%8B%A4.ts2339-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0
+=> styled.d.ts 파일 안에서 아래 추가
+declare module "styled-components" {
+  export interface DefaultTheme {
+    bgColor: string;
+    textColor: string;
+    accentColor: string;
+  }
+}
+
+12. color: inherit;  => 부모로부터 color 물려받기
+
+13. 크기를 조정해도 알아서 가운데 정렬
+max-width: 480px;
+margin: 0 auto;
+
+14. display: flex, display: block 차이
+- display: none => 요소 렌더링 X
+- display: block => 기본적으로 가로 영역 모두 채우며, block 요소 다음에 등장하는 태그는 줄바꿈 처럼 보임
+- display: inline => 줄바꿈 되지 않고 width, height 지정 불가능. 글자나 문장에 효과를 주기 위해 존재하는 속성이라 볼 수 있음
+- display: inline-block => 줄바꿈 X, 크기 지정 O
+- display: flex => 자신이 가진 내용의 width만큼만 가로길이 차지하고, 가로 방향 배치. height는 컨테이너 높이만큼 늘어남. 자식 요소를 모두 inline-block 처리
+
+15. react router dom이 보내주는 location object에 접근
+=> location 객체는 현재 페이지에 대한 정보를 가지고 있다. 
+=> hash, pathname(현재 페이지 경로), search(현재 페이지 hash 값), state(페이지로 전달되는 특정 값)
+
+16.component가 생성될 때 한 번만 코드를 실행하는 방법?
+=> useEffect
