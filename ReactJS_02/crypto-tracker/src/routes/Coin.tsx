@@ -1,24 +1,19 @@
 // import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
-import {
-  Switch,
-  Route,
-  useLocation,
-  useParams,
-  useRouteMatch,
-} from "react-router";
+import { Switch, Route, useLocation, useParams, useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import Chart from "./Chart";
 import Price from "./Price";
+import { Helmet } from "react-helmet";
 
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
 `;
 
-const Loader = styled.span`
+const Loader = styled.span`n
   text-align: center;
   display: block;
 `;
@@ -79,8 +74,7 @@ const Tab = styled.span<{ isActive: boolean }>`
   background-color: rgba(0, 0, 0, 0.5);
   padding: 7px 0px;
   border-radius: 10px;
-  color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
+  color: ${(props) => (props.isActive ? props.theme.accentColor : props.theme.textColor)};
   a {
     padding: 7px 0px;
     display: block;
@@ -187,13 +181,13 @@ function Coin() {
   //React query가 query를 array로 보고 있음
   // isLoading 이름 지정, data 이름 지정
   // interface로 타입 알려주기 <>
-  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
-    ["info", coinId],
-    () => fetchCoinInfo(coinId)
-  );
+  const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(["info", coinId], () => fetchCoinInfo(coinId));
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId)
+    () => fetchCoinTickers(coinId!),
+    {
+      refetchInterval: 5000,
+    }
   );
   /* reactquery 사용하면서 생략
   const [loading, setLoading] = useState(true);
@@ -228,11 +222,12 @@ function Coin() {
   const loading = infoLoading || tickersLoading;
   return (
     <Container>
+      <Helmet>
+        <title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</title>
+      </Helmet>
       <Header>
         {/* loading ? "Loading..." : info?.name => 별도의 URL로 접속한 경우 */}
-        <Title>
-          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
-        </Title>
+        <Title>{state?.name ? state.name : loading ? "Loading..." : infoData?.name}</Title>
       </Header>
       {loading ? (
         <Loader>Loading...</Loader>
@@ -248,8 +243,10 @@ function Coin() {
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              {/* <span>Open Source:</span>
+              <span>{infoData?.open_source ? "Yes" : "No"}</span> */}
+              <span>Price:</span>
+              <span>${tickersData?.quotes.USD.price.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -280,7 +277,7 @@ function Coin() {
               <Price />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart />
+              <Chart coinId={coinId} />
             </Route>
           </Switch>
         </>
