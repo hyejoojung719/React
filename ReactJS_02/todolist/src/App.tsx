@@ -1,11 +1,5 @@
-import Router from "./Router";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { ReactQueryDevtools } from "react-query/devtools";
-import { darkTheme, lightTheme } from "./theme";
-import { useState } from "react";
-
-import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./atoms";
+import { createGlobalStyle } from "styled-components";
+import ToDoList from "./ToDoList";
 
 const GlobalStyle = createGlobalStyle`
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@300;400&display=swap');
@@ -74,20 +68,10 @@ a {
 `;
 
 function App() {
-  // const [isDark, setIsDark] = useState(false);
-  // const toggleDark = () => setIsDark((current) => !current);
-
-  const isDark = useRecoilValue(isDarkAtom);
-
   return (
     <>
-      <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
-        <GlobalStyle />
-        {/* Coins.tsx에 버튼 추가를 위해서 toggleDark prop을 보내야 함.. */}
-        {/* <Router isDark={isDark} toggleDark={toggleDark} /> */}
-        <Router />
-        <ReactQueryDevtools initialIsOpen={true} />
-      </ThemeProvider>
+      <GlobalStyle />
+      <ToDoList />
     </>
   );
 }

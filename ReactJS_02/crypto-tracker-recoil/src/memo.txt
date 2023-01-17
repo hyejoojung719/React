@@ -1,109 +1,11 @@
-1. npm 설치 with typescript
-   npx create-react-app crypto-tracker --template typescript
+1. recoil 사용 시작
+    (1) npm i recoil
+    (2) index.tsx에서 <RecoilRoot>로 감싸기
 
-2. style component 설치
-   npm i --save-dev @types/styled-components
-   npm i styled-components
+2. atoms.ts 파일 생성
+    - atom은 두 가지 속성을 요구 함(key-유일한값, default-기본값)
 
-3. router dom 설치
-   npm i react-router-dom@5.3.0 
-   npm i react-router-dom react-query
-   
-4. 프로젝트 구조
-   / => All coins
-   /:id => /btc => Coin Detail
+3. 사용을 위해서 App.tsx에 useRecoilValue와 isDarkAtom import해서 사용
 
-5. Nested Router :  한 스크린 내에 또다른 Router를 가질 수 있는 것
-   ex) /btc/information
-
-5. Switch : 한 번에 하나의 Route를 렌더링
-
-6. useParams hook: url의 파라미터 정보를 얻고 싶을 때
-
-7. css 셋업
-   - 기존에 셋팅 되어 있는 style 지우기 
-   - import {createGlobalStyles} from "styled-components";
-   - 전역 스코프에 스타일들을 올려줌
-   - const GlobalStyle = createGlobalStyle``;
-   - <></> 안에 넣기 => 유령 컴포넌트 why? 단 하나의 element만 return 해야 하므로
-
-8.React18에서 root 에러
-   - const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
-);
-
-9. 폰트 설정 => google font global style에 import, bodu font-family
-
-10. color : https://flatuicolors.com/palette/gb
-
-11. App.tsx는 ThemeProvider안에 있기 떄문에 Theme에 접근 가능
-=> 접근 못한다고 오류 뜨는 이유
-=> tsconfig.json 파일에 다음과 같은 필드를 명시해야 vsc에서 type inference 가능
-{
-"include": ["src/**/*.tsx", "src/**/*.ts", "src/**/*.d.ts"]
-}
-=> 이래도 안돼서.. 여기 참고 https://velog.io/@hjs0522/styled-components-%EC%97%90%EB%9F%AC-DefaultTheme-%ED%98%95%EC%8B%9D%EC%97%90-%EC%86%8D%EC%84%B1%EC%9D%B4-%EC%97%86%EC%8A%B5%EB%8B%88%EB%8B%A4.ts2339-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0
-=> styled.d.ts 파일 안에서 아래 추가
-declare module "styled-components" {
-  export interface DefaultTheme {
-    bgColor: string; 
-    textColor: string;
-    accentColor: string;
-  }
-}
-
-12. color: inherit;  => 부모로부터 color 물려받기
-
-13. 크기를 조정해도 알아서 가운데 정렬
-max-width: 480px;
-margin: 0 auto;
-
-14. display: flex, display: block 차이
-- display: none => 요소 렌더링 X
-- display: block => 기본적으로 가로 영역 모두 채우며, block 요소 다음에 등장하는 태그는 줄바꿈 처럼 보임
-- display: inline => 줄바꿈 되지 않고 width, height 지정 불가능. 글자나 문장에 효과를 주기 위해 존재하는 속성이라 볼 수 있음
-- display: inline-block => 줄바꿈 X, 크기 지정 O
-- display: flex => 자신이 가진 내용의 width만큼만 가로길이 차지하고, 가로 방향 배치. height는 컨테이너 높이만큼 늘어남. 자식 요소를 모두 inline-block 처리
-
-15. react router dom이 보내주는 location object에 접근
-=> location 객체는 현재 페이지에 대한 정보를 가지고 있다. 
-=> hash, pathname(현재 페이지 경로), search(현재 페이지 hash 값), state(페이지로 전달되는 특정 값)
-
-16.component가 생성될 때 한 번만 코드를 실행하는 방법?
-=> useEffect
-
-17. console에서 우클릭 후 store object as global variable 클릭하면 
-object 데이터가 temp에 저장 됨. 그럼 필요시 temp에 접근
-
-18. 보통 interface 이름 지을 때 앞에 I를 붙이기도함
-ex) IPriceData
-
-19. useRouteMatch hook
-- 유저가 특정한 URL에 있는 지의 여부를 알려줌 
-
-20. react query 사용
-- npm i react query
-- fetcher 함수 만들기(아래와 같은 기능을하는 함수) => api.ts
-ex) const response = await fetch("https://api.coinpaprika.com/v1/coins");
-    const json = await response.json();
--  const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
-   => useQuery(queryKey(우리 쿼리의 고유 식별자), fetcher 함수)
-   => fetchCoins가 끝나면 react query는 그 함수의 데이터를 여기 data에 넣어줌 
-- isLoading은 true 또는 false => 기존 loading state를 대체
-   => fetcher 함수가 isLoading이면 또는 fetcherCoins가 끝나면 알려줌
-
-21. react query를 사용하면 아래 과정을 자동으로 해줌
-// const [coins, setCoins] = useState<ICoin[]>([]);
-// const [loading, setLoading] = useState(true);
-// useEffect(() => {
-//   (async () => {
-//     const response = await fetch("https://api.coinpaprika.com/v1/coins");
-//     const json = await response.json();
-//     setCoins(json.slice(0, 100));
-//     setLoading(false);
-//   })();
-// }, []);
-
-22. ReactQueryDevtools 이용하기
-=> App.tsx에 import
-=> query 정보 얻을 수 있음
+4. isDarkAtom값을 바꾸기 위해 useSetRecoilState를 사용한다.
+=> Coins.tsx에 버튼이 있어서 여기에 추가

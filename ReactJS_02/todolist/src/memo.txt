@@ -1,0 +1,44 @@
+### 프로젝트 셋팅
+ npx create-react-app todolist --template typescript
+ npm i --save-dev @types/styled-components
+ npm i styled-components
+ npm i react-router-dom@5.3.0
+ npm i react-router-dom react-query
+ npm i react query
+ npm i react helmet
+ npm i recoil
+ npm i react-hook-form
+
+
+ ### react-hook-form 사용전..
+ 회원가입 form을 만든다고 할 때, 
+ id, password, email 등등 input element마다 
+  const [toDo, setToDo] = useState("");
+  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    const {
+      currentTarget: { value },
+    } = event;
+    setToDo(value);
+  };
+
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(toDo);
+  };
+  위에 코드를 적어야 함
+
+
+  ### react-hook-form 사용하기
+  1. npm i react-hook-form
+  2. register함수를 사용하면 onChange이벤트 헨들러가 필요업어짐~~ props, setState도 필요없어진다!!
+  3. watch는 form의 입력값들의 변화를 관찰할 수 있게 함
+  4. handleSubmit이 validation 담당 ex) preventDefault
+      <form onSubmit={handleSubmit(onValid)}>
+      => onSubmit 이벤트 안에 handleSubmit을 호출하고, handleSubmit은 2개의 인자를 받음.
+         하나는 데이터가 유효할 때 호출되는 함수(필수), 또 다른 하나는 데이터가 유효하지 않을 떄 호출되는 함수
+  5. formState => 에러 체크
+  6. formState를 이용한 거 외에 추가적인 에러체크가 필요할 경우
+     => setError : 발생하는 문제에 따라 추가적으로 에러를 설정할 수 있게 도와줌
+    ex) password랑 apssword1이 같지 않을 경우 에러 발생시키기
+     => validate : 함수를 값으로 가지는데 인자로 가짐, 내가 원하는 규칙으로 유효성 검사하기
+    ex) nick 포함한 사람 가입 못 하게 하기

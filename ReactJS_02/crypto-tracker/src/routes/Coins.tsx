@@ -141,7 +141,9 @@ function Coins() {
                       state: { name: coin.name },
                     }}
                   >
-                    <Img src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`} />
+                    <Img
+                      src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                    />
                     {coin.name} &rarr;
                   </Link>
                 </Coin>

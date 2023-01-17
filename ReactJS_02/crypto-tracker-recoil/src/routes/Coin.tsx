@@ -1,4 +1,3 @@
-// import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import {
   Switch,
@@ -12,13 +11,14 @@ import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import Chart from "./Chart";
 import Price from "./Price";
+import { Helmet } from "react-helmet";
 
 const Title = styled.h1`
   font-size: 48px;
   color: ${(props) => props.theme.accentColor};
 `;
 
-const Loader = styled.span`
+const Loader = styled.span`n
   text-align: center;
   display: block;
 `;
@@ -96,20 +96,6 @@ interface RouteState {
   name: string;
 }
 
-// temp1에서 keys만 갖고 오기 => Object.keys(temp1)
-// 객체가 key:value 형태이니까
-// Object.keys(temp1).join()
-// Object.values(temp1).map(v=>typeof v).join() => 타입 값 가져오기
-// 단축키 : Ctrl(Command)+D: 같은 문자열 선택  / 전체 드래그후 alt + shift + i  : 선택한 모든 문자열에 가장 우측 끝으로 포커싱
-
-// 얘도 temp1에서 정보 얻음
-// interface ITag {
-//   coin_counter: number;
-//   ico_counter: number;
-//   id: string;
-//   name: string;
-// }
-
 interface InfoData {
   id: string;
   name: string;
@@ -166,70 +152,41 @@ interface PriceData {
   };
 }
 
-function Coin() {
-  // typescript에 url에 어떤 파라미터가 있는지 알려줘야함
-  // 1. interface를 쓰거나 2. 직접  {coinId: string}이라고 넣어주거나
+interface ICoinProps {
+  // isDark: boolean;
+}
+
+function Coin({}: /* isDark*/ ICoinProps) {
   const { coinId } = useParams<RouteParams>();
 
-  // 역시나 typescript에 타입을 알려줘야 함 => 인터페이스 쓰기
   const { state } = useLocation<RouteState>();
-  // console.log(state.name);
 
   const priceMatch = useRouteMatch("/:coinId/price");
   const chartMatch = useRouteMatch("/:coinId/chart");
-  // 유저가 "url"에 있는 걸 알려줌
 
-  // react router dom이 보내주는 location object에 접근
   const location = useLocation();
   console.log(location);
 
-  //모든 query는 고유의 id를 가져야함
-  //React query가 query를 array로 보고 있음
-  // isLoading 이름 지정, data 이름 지정
-  // interface로 타입 알려주기 <>
   const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>(
     ["info", coinId],
     () => fetchCoinInfo(coinId)
   );
   const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>(
     ["tickers", coinId],
-    () => fetchCoinTickers(coinId)
+    () => fetchCoinTickers(coinId!),
+    {
+      refetchInterval: 5000,
+    }
   );
-  /* reactquery 사용하면서 생략
-  const [loading, setLoading] = useState(true);
-  const [info, setInfo] = useState<InfoData>();
-  const [priceInfo, setPriceInfo] = useState<PriceData>();
-
-  useEffect(() => {
-    (async () => {
-      const infoData = await (
-        await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-      ).json();
-      console.log("코인", coinId);
-      console.log("info", infoData);
-      const priceData = await (
-        await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-      ).json();
-      console.log("priceInfo", priceData);
-
-      setInfo(infoData);
-      setPriceInfo(priceData);
-      setLoading(false); //얘를 안해주면 계속 Loading 상태로 남는다.
-    })();
-  }, [coinId]); // [coinId] => coinId가 변하면 위 useEffect안의 코드가 다시 실행된다.
-*/
-
-  // state?.name으로 하는 이유
-  // state가 생성되려면 Home화면을 먼저 열어야 하는데,
-  // 그렇지 않고 직접 url을 치고 들어가면 state.name이 undefined 되면서 에러가 뜬다.
-  // {state?.name || "Loading..."} => state가 존재하면 name을 가져오고 아니면 Loading 띄우기
-
-  // loading은 infoLoading이나 tickersLoading이 될 수 있다.
   const loading = infoLoading || tickersLoading;
   return (
     <Container>
+      <Helmet>
+        <title>
+          {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+        </title>
+      </Helmet>
       <Header>
-        {/* loading ? "Loading..." : info?.name => 별도의 URL로 접속한 경우 */}
         <Title>
           {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
         </Title>
@@ -248,8 +205,8 @@ function Coin() {
               <span>${infoData?.symbol}</span>
             </OverviewItem>
             <OverviewItem>
-              <span>Open Source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              <span>Price:</span>
+              <span>${tickersData?.quotes?.USD?.price?.toFixed(3)}</span>
             </OverviewItem>
           </Overview>
           <Description>{infoData?.description}</Description>
@@ -261,12 +218,10 @@ function Coin() {
             <OverviewItem>
               <span>Max Supply:</span>
               <span>{tickersData?.max_supply}</span>
-              {/* priceInfo가 존재할 경우에만 max_supply를 찾음 */}
             </OverviewItem>
           </Overview>
 
           <Tabs>
-            {/* isActive prop 보내기 => 현재 해당 url에 없다면 */}
             <Tab isActive={chartMatch !== null}>
               <Link to={`/${coinId}/chart`}>Chart</Link>
             </Tab>
@@ -280,7 +235,7 @@ function Coin() {
               <Price />
             </Route>
             <Route path={`/:coinId/chart`}>
-              <Chart />
+              <Chart /*isDark={isDark}*/ coinId={coinId} />
             </Route>
           </Switch>
         </>
