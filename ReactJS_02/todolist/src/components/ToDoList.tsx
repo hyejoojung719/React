@@ -1,6 +1,9 @@
 // import React, { useState } from "react";
 
-import { useForm } from "react-hook-form";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { categoryState, toDoSelector, toDoState } from "../atoms";
+import CreateToDo from "./CreateToDo";
+import ToDo from "./ToDo";
 // import { DefaultValue } from "recoil";
 
 /*
@@ -35,28 +38,65 @@ function ToDoList() {
   );
 }*/
 
-interface IForm {
-  toDo: string;
-}
-
 function ToDoList() {
-  const { register, handleSubmit, setValue } = useForm<IForm>();
-  const handleValid = (data: IForm) => {
-    console.log("add to do", data.toDo);
-    setValue("toDo", "");
+  // 배열의 첫 번째 항목은 데이터의 value, 두 번째는 value를 변경하기 위해 사용되는 함수
+  // 데이터만 불러오고 싶을 때는 useRecoilValue를 쓰고, 둘 다 쓰고 싶을 때는 useRecoilState 사용
+  // const [value, modFn] = useRecoilState(toDoState);
+  // 아래를 한 줄로 쓰기
+  // const value = useRecoilValue(toDoState);
+  // const modFn = useSetRecoilState(toDoState);
+
+  // const toDos = useRecoilValue(toDoState);
+  // const selectorOutput = useRecoilValue(toDoSelector);
+  // console.log(toDos);
+  // console.log(selectorOutput);
+  const toDos = useRecoilValue(toDoSelector);
+  const [category, setCategory] = useRecoilState(categoryState);
+  // select의 onInput 감지하기
+  const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
+    // console.log(event.currentTarget.value);
+    setCategory(event.currentTarget.value);
   };
+  console.log(category);
 
   return (
     <div>
-      <form onSubmit={handleSubmit(handleValid)}>
-        <input
-          {...register("toDo", {
-            required: "Please write a To Do",
-          })}
-          placeholder="Write a to do"
-        />
-        <button>Add</button>
-      </form>
+      <h1>To Dos</h1>
+      <hr />
+      {/* 한 번에 하나의 카테고리만 보여주기 위해 수정 */}
+
+      <select value={category} onInput={onInput}>
+        <option value="To_DO">To DO</option>
+        <option value="DOING">Doing</option>
+        <option value="DONE">Done</option>
+      </select>
+      <CreateToDo />
+      {toDos?.map((toDo) => (
+        <ToDo key={toDo.id} {...toDo} />
+      ))}
+
+      {/* <h2>To Do</h2>
+      <ul>
+        {toDo.map((toDo) => (
+          // <ToDo text={toDo.text} category={toDo.category} id={toDo.id} />
+          <ToDo key={toDo.id} {...toDo} />
+        ))}
+      </ul>
+      <hr />
+      <h2>DOING</h2>
+      <ul>
+        {doing.map((doing) => (
+          <ToDo key={doing.id} {...doing} />
+        ))}
+      </ul>
+      <hr />
+      <h2>DONE</h2>
+      <ul>
+        {done.map((done) => (
+          <ToDo key={done.id} {...done} />
+        ))}
+      </ul>
+      <hr /> */}
     </div>
   );
 }

@@ -42,3 +42,20 @@
     ex) password랑 apssword1이 같지 않을 경우 에러 발생시키기
      => validate : 함수를 값으로 가지는데 인자로 가짐, 내가 원하는 규칙으로 유효성 검사하기
     ex) nick 포함한 사람 가입 못 하게 하기
+
+  
+  ###toDo 카테고리 수정하기
+  1. console.log(toDo)
+  2. toDo data 생성(5개..)
+  3. 3번쨰 toDo 카테고리 수정하기 
+    => state mutate하기  
+    (1) 수정하고자 하는 toDo 경로 찾기 => targetIndex
+    (2) 새 category로 새로운 to do 만들기
+
+  ###Recoil Selector
+  - 파생된 state(derived state)의 일부를 나타냄
+  - 기존 state를 가져와 새로운 state를 만들어 반환(기존 state 변형 X)
+  - ex) todo들을 카테고리별로 분류하기 => toDo를 하나의 atom에 담고 싶지만
+        atom의 output을 좀더 잘 써먹을 수 있는 형태로 변환
+  - component는 data를 렌더링하기만 하고, 
+  atom에 데이터를 모아두고selector을 이용해서 데이터를 변형해서 반환할 수 있다. 
