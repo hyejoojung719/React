@@ -1,7 +1,7 @@
 // import React, { useState } from "react";
 
 import { useRecoilState, useRecoilValue } from "recoil";
-import { categoryState, toDoSelector, toDoState } from "../atoms";
+import { Categories, categoryState, toDoSelector, toDoState } from "../atoms";
 import CreateToDo from "./CreateToDo";
 import ToDo from "./ToDo";
 // import { DefaultValue } from "recoil";
@@ -54,10 +54,11 @@ function ToDoList() {
   const [category, setCategory] = useRecoilState(categoryState);
   // select의 onInput 감지하기
   const onInput = (event: React.FormEvent<HTMLSelectElement>) => {
-    // console.log(event.currentTarget.value);
-    setCategory(event.currentTarget.value);
+    console.log("현재값", event.currentTarget.value);
+    setCategory(+event.currentTarget.value as number);
   };
-  console.log(category);
+  // console.log(category);
+  console.log("toDos", toDos);
 
   return (
     <div>
@@ -66,9 +67,9 @@ function ToDoList() {
       {/* 한 번에 하나의 카테고리만 보여주기 위해 수정 */}
 
       <select value={category} onInput={onInput}>
-        <option value="To_DO">To DO</option>
-        <option value="DOING">Doing</option>
-        <option value="DONE">Done</option>
+        <option value={Categories.TO_DO}>To DO</option>
+        <option value={Categories.DOING}>Doing</option>
+        <option value={Categories.DONE}>Done</option>
       </select>
       <CreateToDo />
       {toDos?.map((toDo) => (

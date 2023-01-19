@@ -59,3 +59,8 @@
         atom의 output을 좀더 잘 써먹을 수 있는 형태로 변환
   - component는 data를 렌더링하기만 하고, 
   atom에 데이터를 모아두고selector을 이용해서 데이터를 변형해서 반환할 수 있다. 
+
+
+  ###enum
+  - toDo 카테고리가 categoryState에 따라서 추가되게 하기
+  
